@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from yokira_app_gg.serializers import Test
+from yokira_app_gg.models import Test
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
