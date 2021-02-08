@@ -45,26 +45,52 @@ def test_list(request):
         # 'safe=False' for objects serialization
     elif request.method == 'POST':
         test_data = JSONParser().parse(request)
-        test_serializer = TutorialSerializer(data=tutorial_data)
+        test_serializer = TestSerializer(data=test_data)
         if test_serializer.is_valid():
             test_serializer.save()
-            return JsonResponse(tutorial_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(test_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(test_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        count = Tutorial.objects.all().delete()
+        return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
  
 @api_view(['GET', 'PUT', 'DELETE'])
 def test_detail(request, pk):
+    # ... tutorial = Tutorial.objects.get(pk=pk)
+ 
+    if request.method == 'GET': 
+        tutorial_serializer = TestSerializer(test) 
+        return JsonResponse(test_serializer.data) 
+
     # find tutorial by pk (id)
     try: 
         test = Test.objects.get(pk=pk) 
     except Test.DoesNotExist: 
         return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
- 
-    # GET / PUT / DELETE tutorial
+
+    elif request.method == 'PUT': 
+        tutorial_data = JSONParser().parse(request) 
+        tutorial_serializer = TutorialSerializer(tutorial, data=tutorial_data) 
+        if tutorial_serializer.is_valid(): 
+            tutorial_serializer.save() 
+            return JsonResponse(tutorial_serializer.data) 
+        return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+    elif request.method == 'DELETE': 
+        tutorial.delete() 
+        return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
     
         
 @api_view(['GET'])
 def test_list_published(request):
     # GET all published tutorials
+tutorials = Tutorial.objects.filter(published=True)
+        
+    if request.method == 'GET': 
+        tutorials_serializer = TutorialSerializer(tutorials, many=True)
+        return JsonResponse(tutorials_serializer.data, safe=False)
+
     try:
         test = Test.objects.get()
     except Test.DoesNotExist:
