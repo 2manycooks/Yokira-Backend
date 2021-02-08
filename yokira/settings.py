@@ -25,7 +25,7 @@ SECRET_KEY = '159&e4tyofmk_5+b2%tma_9ajr_4m@yboa8)3(he+r80wp*83l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -69,6 +69,8 @@ REST_FRAMEWORK = {
 """ CORS_ORIGIN_WHITELIST = (
     'localhost:3000'
 ) """
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {

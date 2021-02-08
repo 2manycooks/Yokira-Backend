@@ -109,7 +109,7 @@ def test_list_published(request):
         return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def current_user(request):
     """
     Determine the current user by their token, and return their data
@@ -132,4 +132,6 @@ class UserList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+            console.log(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        console.log(serializer.data)
