@@ -31,29 +31,36 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
+@api_view(['GET', 'POST'])
+def hello_world(request):
+    if request.method == 'POST':
+        return JsonResponse({"message": "Got some data!", "data": request.data})
+    return JsonResponse({"message": "Hello, world!"})
+
 @api_view(['GET', 'POST', 'DELETE'])
 def test_list(request):
     if request.method == 'GET':
-        tutorials = Tutorial.objects.all()
-        
-        title = request.GET.get('title', None)
-        if title is not None:
-            test = test.filter(title__icontains=title)
-        
+        tests = Test.objects.all()
+        title = request.GET.get('title')
+        if not title:
+            title = ""
+        test = tests.filter(title__icontains=title)
         test_serializer = TestSerializer(test, many=True)
         return JsonResponse(test_serializer.data, safe=False)
         # 'safe=False' for objects serialization
-    elif request.method == 'POST':
+    """ elif request.method == 'POST':
         test_data = JSONParser().parse(request)
         test_serializer = TestSerializer(data=test_data)
         if test_serializer.is_valid():
             test_serializer.save()
-            return JsonResponse(test_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(test_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+            return JsonResponse(test_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(test_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(json.dumps({'key': 'value'},default=json_util.default))
+
     elif request.method == 'DELETE':
         count = Tutorial.objects.all().delete()
-        return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT) """
  
 @api_view(['GET', 'PUT', 'DELETE'])
 def test_detail(request, pk):
@@ -61,13 +68,7 @@ def test_detail(request, pk):
  
     if request.method == 'GET': 
         tutorial_serializer = TestSerializer(test) 
-        return JsonResponse(test_serializer.data) 
-
-    # find tutorial by pk (id)
-    try: 
-        test = Test.objects.get(pk=pk) 
-    except Test.DoesNotExist: 
-        return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+        return JsonResponse(test_serializer.data)
 
     elif request.method == 'PUT': 
         tutorial_data = JSONParser().parse(request) 
@@ -81,11 +82,17 @@ def test_detail(request, pk):
         tutorial.delete() 
         return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
     
+     # find tutorial by pk (id)
+    try: 
+        test = Test.objects.get(pk=pk) 
+    except Test.DoesNotExist: 
+        return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+
         
 @api_view(['GET'])
 def test_list_published(request):
     # GET all published tutorials
-tutorials = Tutorial.objects.filter(published=True)
+    tutorials = Tutorial.objects.filter(published=True)
         
     if request.method == 'GET': 
         tutorials_serializer = TutorialSerializer(tutorials, many=True)
