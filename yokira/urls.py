@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url, include 
 from rest_framework import routers
 from yokira_app_gg import views
-from django.conf.urls import url, include 
+from rest_framework_jwt.views import obtain_jwt_token
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -28,4 +29,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
     url(r'^', include('yokira_app_gg.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('token-auth/', obtain_jwt_token),
+    path('yokira_app_gg/', include('yokira_app_gg.urls'))
 ]
