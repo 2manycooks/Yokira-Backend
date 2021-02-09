@@ -68,6 +68,3 @@ class Enemy(models.Model):
     max_atk = models.IntegerField()
     min_def = models.IntegerField()
     max_def = models.IntegerField()
-
-
-
