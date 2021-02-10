@@ -47,3 +47,4 @@ class TestSerializer(serializers.HyperlinkedModelSerializer):
                   'title',
                   'description',
                   'published')
+

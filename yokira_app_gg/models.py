@@ -7,13 +7,25 @@ from django.contrib.auth.models import User, Group
 class ItemType(models.Model):
     name = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.name
+    
+
 # Is an FK inside Enemy. Defines enemy type (for purpose of special abilities, image, etc)
 class EnemyType(models.Model):
     name = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.name
+    
+
 # Is an FK inside Enemy. Stores location of img source.
 class EnemyImage(models.Model):
     image = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
 
 """  === Base Models  === """
 
@@ -30,14 +42,23 @@ class Equipment(models.Model):
     min_def = models.IntegerField()
     max_def = models.IntegerField()
 
+    def __str__(self):
+        return self.item_type.name
+    
+
 # Player model has One-To-One relation with Backpack, with inidividual instances of the equipment model.
 class Backpack(models.Model):
-    slot_1 = models.ForeignKey(Equipment, related_name="bp_slot_1", on_delete=models.CASCADE, default= None, blank=True)
-    slot_2 = models.ForeignKey(Equipment, related_name="bp_slot_2", on_delete=models.CASCADE, default= None, blank=True)
-    slot_3 = models.ForeignKey(Equipment, related_name="bp_slot_3", on_delete=models.CASCADE, default= None, blank=True)
-    slot_4 = models.ForeignKey(Equipment, related_name="bp_slot_4", on_delete=models.CASCADE, default= None, blank=True)
-    slot_5 = models.ForeignKey(Equipment, related_name="bp_slot_5", on_delete=models.CASCADE, default= None, blank=True)
-    slot_6 = models.ForeignKey(Equipment, related_name="bp_slot_6", on_delete=models.CASCADE, default= None, blank=True)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    slot_1 = models.ForeignKey(Equipment, related_name="bp_slot_1", on_delete=models.CASCADE, default= None, blank=True, null= True)
+    slot_2 = models.ForeignKey(Equipment, related_name="bp_slot_2", on_delete=models.CASCADE, default= None, blank=True, null= True)
+    slot_3 = models.ForeignKey(Equipment, related_name="bp_slot_3", on_delete=models.CASCADE, default= None, blank=True, null= True)
+    slot_4 = models.ForeignKey(Equipment, related_name="bp_slot_4", on_delete=models.CASCADE, default= None, blank=True, null= True)
+    slot_5 = models.ForeignKey(Equipment, related_name="bp_slot_5", on_delete=models.CASCADE, default= None, blank=True, null= True)
+    slot_6 = models.ForeignKey(Equipment, related_name="bp_slot_6", on_delete=models.CASCADE, default= None, blank=True, null= True)
+
+    def __str__(self):
+        return self.owner.player_name
+    
 
 
 
@@ -55,7 +76,7 @@ class Player(models.Model):
         (shinobi, 'Shinobi'),
         (monk, 'Monk')
     ]
-    player_class = models.CharField(max_length=2)
+    player_class = models.CharField(max_length=2, choices=player_class_choices)
     backpack_contents = models.OneToOneField(Backpack, on_delete=models.CASCADE, default=Backpack)
 
 
