@@ -32,12 +32,12 @@ class Equipment(models.Model):
 
 # Player model has One-To-One relation with Backpack, with inidividual instances of the equipment model.
 class Backpack(models.Model):
-    slot_1 = models.ForeignKey(Equipment, related_name="bp_slot_1", on_delete=models.SET_NULL, null=True)
-    slot_2 = models.ForeignKey(Equipment, related_name="bp_slot_2", on_delete=models.SET_NULL, null=True)
-    slot_3 = models.ForeignKey(Equipment, related_name="bp_slot_3", on_delete=models.SET_NULL, null=True)
-    slot_4 = models.ForeignKey(Equipment, related_name="bp_slot_4", on_delete=models.SET_NULL, null=True)
-    slot_5 = models.ForeignKey(Equipment, related_name="bp_slot_5", on_delete=models.SET_NULL, null=True)
-    slot_6 = models.ForeignKey(Equipment, related_name="bp_slot_6", on_delete=models.SET_NULL, null=True)
+    slot_1 = models.ForeignKey(Equipment, related_name="bp_slot_1", on_delete=models.CASCADE, default= None, blank=True)
+    slot_2 = models.ForeignKey(Equipment, related_name="bp_slot_2", on_delete=models.CASCADE, default= None, blank=True)
+    slot_3 = models.ForeignKey(Equipment, related_name="bp_slot_3", on_delete=models.CASCADE, default= None, blank=True)
+    slot_4 = models.ForeignKey(Equipment, related_name="bp_slot_4", on_delete=models.CASCADE, default= None, blank=True)
+    slot_5 = models.ForeignKey(Equipment, related_name="bp_slot_5", on_delete=models.CASCADE, default= None, blank=True)
+    slot_6 = models.ForeignKey(Equipment, related_name="bp_slot_6", on_delete=models.CASCADE, default= None, blank=True)
 
 
 
@@ -61,7 +61,7 @@ class Player(models.Model):
 
 class Enemy(models.Model):
     enemy_name = models.CharField(max_length=20)
-    enemy_type = models.CharField(max_length=20)
+    enemy_type = models.ForeignKey(EnemyType, on_delete=models.CASCADE, default="")
     enemy_level = models.IntegerField(default=1)
     enemy_image = models.OneToOneField(EnemyImage, on_delete=models.RESTRICT, default="")
     min_atk = models.IntegerField()
