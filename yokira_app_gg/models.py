@@ -45,22 +45,14 @@ class Equipment(models.Model):
     def __str__(self):
         return self.item_type.name
     
-
 # Player model has One-To-One relation with Backpack, with inidividual instances of the equipment model.
 class Backpack(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, default=None, blank=True, null=True)
     slot_1 = models.ForeignKey(Equipment, related_name="bp_slot_1", on_delete=models.CASCADE, default= None, blank=True, null= True)
     slot_2 = models.ForeignKey(Equipment, related_name="bp_slot_2", on_delete=models.CASCADE, default= None, blank=True, null= True)
     slot_3 = models.ForeignKey(Equipment, related_name="bp_slot_3", on_delete=models.CASCADE, default= None, blank=True, null= True)
     slot_4 = models.ForeignKey(Equipment, related_name="bp_slot_4", on_delete=models.CASCADE, default= None, blank=True, null= True)
     slot_5 = models.ForeignKey(Equipment, related_name="bp_slot_5", on_delete=models.CASCADE, default= None, blank=True, null= True)
     slot_6 = models.ForeignKey(Equipment, related_name="bp_slot_6", on_delete=models.CASCADE, default= None, blank=True, null= True)
-
-    def __str__(self):
-        return self.owner.player_name
-    
-
-
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -78,7 +70,6 @@ class Player(models.Model):
     ]
     player_class = models.CharField(max_length=2, choices=player_class_choices)
     backpack_contents = models.OneToOneField(Backpack, on_delete=models.CASCADE, default=Backpack)
-
 
 class Enemy(models.Model):
     enemy_name = models.CharField(max_length=20)
