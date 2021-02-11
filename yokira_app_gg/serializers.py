@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from yokira_app_gg.models import Test
+from yokira_app_gg.models import Test, Equipment, Backpack, Player, Enemy
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -48,3 +48,25 @@ class TestSerializer(serializers.HyperlinkedModelSerializer):
                   'description',
                   'published')
 
+class EquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        fields = '__all__'
+        
+
+class BackpackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Backpack
+        """ fields = '__all__' """
+        exclude = ['id']
+
+class PlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        """ field = '__all__' """
+        exclude = ['id']
+class EnemySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Enemy
+        """ field = '__all__' """
+        exclude = ['id']

@@ -12,8 +12,8 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets, permissions
 # Model/Serializer Imports
 from django.contrib.auth.models import User, Group
-from yokira_app_gg.models import Test
-from yokira_app_gg.serializers import UserSerializer, GroupSerializer, TestSerializer, UserSerializerWithToken
+from yokira_app_gg.models import Test, Equipment, Backpack, Player, Enemy
+from yokira_app_gg.serializers import UserSerializer, GroupSerializer, TestSerializer, UserSerializerWithToken, EquipmentSerializer, BackpackSerializer, PlayerSerializer, EnemySerializer
 
 
 
@@ -118,7 +118,6 @@ def current_user(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-
 class UserList(APIView):
     """
     Create a new user. It's called 'UserList' because normally we'd have a get
@@ -135,3 +134,35 @@ class UserList(APIView):
             console.log(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         console.log(serializer.data)
+
+@api_view(['GET', 'POST'])
+def equipment_list(request):
+    """ Grabs one of the monster types """
+    if request.method == 'GET':
+        all_equipment = Equipment.objects.all()
+        equipment_serializer = EquipmentSerializer(all_equipment,many=True)
+        return JsonResponse(equipment_serializer.data, safe=False)
+
+@api_view(['GET'])
+def backpack(request):
+    """ brings in the backpack model, which is essentially a container for foreign keys of Equipment """
+    if request.method == 'GET':
+        backpacks = Backpack.objects.all()
+        backpack_serializer = BackpackSerializer(backpacks, many=True)
+        return JsonResponse(backpack_serializer.data, safe=False)
+
+@api_view(['GET'])
+def player_info(request):
+    """ contains all information about player, including foreign keys """
+    if request.method == 'GET':
+        player_list = Player.objects.all()
+        player_serializer = PlayerSerializer(player_list, many=True)
+        return JsonResponse(player_serializer.data, safe=False)
+
+@api_view(['GET'])
+def enemy_info(request):
+    """ same as player view above """
+    if request.method == 'GET':
+        enemy_list = Enemy.objects.all()
+        enemy_serializer = EnemySerializer(enemy_list, many=True)
+        return JsonResponse(enemy_serializer.data, safe=False)

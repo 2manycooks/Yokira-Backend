@@ -21,8 +21,9 @@ class EnemyType(models.Model):
 
 # Is an FK inside Enemy. Stores location of img source.
 class EnemyImage(models.Model):
-    image = models.CharField(max_length=200)
-
+    image = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
+    name = models.CharField(max_length=200, default='')
+    
     def __str__(self):
         return self.name
     
@@ -71,6 +72,10 @@ class Player(models.Model):
     player_class = models.CharField(max_length=2, choices=player_class_choices)
     backpack_contents = models.OneToOneField(Backpack, on_delete=models.CASCADE, default=Backpack)
 
+    def __str__(self):
+        return self.player_name
+    
+
 class Enemy(models.Model):
     enemy_name = models.CharField(max_length=20)
     enemy_type = models.ForeignKey(EnemyType, on_delete=models.CASCADE, default="")
@@ -80,3 +85,7 @@ class Enemy(models.Model):
     max_atk = models.IntegerField()
     min_def = models.IntegerField()
     max_def = models.IntegerField()
+    
+    def __str__(self):
+        return self.enemy_name
+    

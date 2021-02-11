@@ -13,4 +13,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('current_user/', current_user),
     path('users/', UserList.as_view()),
+    path('equipment_list/', views.equipment_list),
+    path('backpack/', views.backpack),
+    path('player_info/', views.player_info),
+    path('enemy_info/', views.enemy_info),
 ]
