@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-
 # Response Methods
 from django.http.response import JsonResponse
 from django.http import HttpResponseRedirect
@@ -34,6 +33,84 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+@api_view(['GET', 'POST'])
+def current_user(request):
+    """
+    Determine the current user by their token, and return their data
+    """
+    
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def delete_user(request):
+
+    user=User.objects.get(id=request.user.id)
+    user.delete()
+    return JsonResponse({"success": "you have deleted successfully"})
+
+class UserList(APIView):
+    """
+    Create a new user. It's called 'UserList' because normally we'd have a get
+    method here too, for retrieving a list of all User objects.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = UserSerializerWithToken(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            console.log(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        console.log(serializer.data)
+
+@api_view(['GET', 'POST'])
+def equipment_list(request):
+    """ Grabs one of the monster types """
+    if request.method == 'GET':
+        all_equipment = Equipment.objects.all()
+        equipment_serializer = EquipmentSerializer(all_equipment,many=True)
+        return JsonResponse(equipment_serializer.data, safe=False)
+
+@api_view(['GET'])
+def backpack(request):
+    """ brings in the backpack model, which is essentially a container for foreign keys of Equipment """
+    if request.method == 'GET':
+        backpacks = Backpack.objects.all()
+        backpack_serializer = BackpackSerializer(backpacks, many=True)
+        return JsonResponse(backpack_serializer.data, safe=False)
+
+@api_view(['GET'])
+def player_info(request):
+    """ contains all information about player, including foreign keys """
+    if request.method == 'GET':
+        player_list = Player.objects.all()
+        player_serializer = PlayerSerializer(player_list, many=True)
+        return JsonResponse(player_serializer.data, safe=False)
+
+@api_view(['GET'])
+def enemy_info(request):
+    """ same as player view above """
+    if request.method == 'GET':
+        enemy_list = Enemy.objects.all()
+        enemy_serializer = EnemySerializer(enemy_list, many=True)
+        return JsonResponse(enemy_serializer.data, safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
+""" TEST VIEWS """
 
 
 @api_view(['GET', 'POST'])
@@ -107,62 +184,3 @@ def test_list_published(request):
         test = Test.objects.get()
     except Test.DoesNotExist:
         return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
-
-
-@api_view(['GET', 'POST'])
-def current_user(request):
-    """
-    Determine the current user by their token, and return their data
-    """
-    
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-
-class UserList(APIView):
-    """
-    Create a new user. It's called 'UserList' because normally we'd have a get
-    method here too, for retrieving a list of all User objects.
-    """
-
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, format=None):
-        serializer = UserSerializerWithToken(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-            console.log(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        console.log(serializer.data)
-
-@api_view(['GET', 'POST'])
-def equipment_list(request):
-    """ Grabs one of the monster types """
-    if request.method == 'GET':
-        all_equipment = Equipment.objects.all()
-        equipment_serializer = EquipmentSerializer(all_equipment,many=True)
-        return JsonResponse(equipment_serializer.data, safe=False)
-
-@api_view(['GET'])
-def backpack(request):
-    """ brings in the backpack model, which is essentially a container for foreign keys of Equipment """
-    if request.method == 'GET':
-        backpacks = Backpack.objects.all()
-        backpack_serializer = BackpackSerializer(backpacks, many=True)
-        return JsonResponse(backpack_serializer.data, safe=False)
-
-@api_view(['GET'])
-def player_info(request):
-    """ contains all information about player, including foreign keys """
-    if request.method == 'GET':
-        player_list = Player.objects.all()
-        player_serializer = PlayerSerializer(player_list, many=True)
-        return JsonResponse(player_serializer.data, safe=False)
-
-@api_view(['GET'])
-def enemy_info(request):
-    """ same as player view above """
-    if request.method == 'GET':
-        enemy_list = Enemy.objects.all()
-        enemy_serializer = EnemySerializer(enemy_list, many=True)
-        return JsonResponse(enemy_serializer.data, safe=False)

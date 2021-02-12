@@ -30,6 +30,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include('yokira_app_gg.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('yokira_app_gg/', include('yokira_app_gg.urls')),
     path('token-auth/', obtain_jwt_token),
-    path('yokira_app_gg/', include('yokira_app_gg.urls'))
 ]

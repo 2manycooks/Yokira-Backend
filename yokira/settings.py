@@ -67,7 +67,7 @@ REST_FRAMEWORK = {
 }
 
 """ CORS_ORIGIN_WHITELIST = (
-    'localhost:3000'
+    'https://localhost:3000'
 ) """
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -122,8 +122,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'yokira.utils.my_jwt_response_handler'
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'yokira.utils.my_jwt_response_handler',
+    'JWT_VERIFY_EXPIRATION': False
 }
+
 
 
 # Internationalization
