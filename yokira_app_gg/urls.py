@@ -14,6 +14,7 @@ urlpatterns = [
     path('current_user/', current_user),
     path('users/', UserList.as_view()),
     path('users/delete', views.delete_user),
+    path('users/edit', views.edit_user),
     path('equipment_list/', views.equipment_list),
     path('backpack/', views.backpack),
     path('player_info/', views.player_info),

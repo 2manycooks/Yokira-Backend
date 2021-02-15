@@ -50,6 +50,15 @@ def delete_user(request):
     user.delete()
     return JsonResponse({"success": "you have deleted successfully"})
 
+@api_view(['PUT'])
+def edit_user(request):
+    user= User.objects.get(id=request.user.id)
+    import json
+    data = json.loads(request.body)
+    user.username= data.get("username")
+    user.save()
+    return JsonResponse({"success": "you have edited successfully"})
+
 class UserList(APIView):
     """
     Create a new user. It's called 'UserList' because normally we'd have a get
