@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '159&e4tyofmk_5+b2%tma_9ajr_4m@yboa8)3(he+r80wp*83l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', 'https://gentle-beach-61364.herokuapp.com/', 'immense-inlet-18299.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'https://gentle-beach-61364.herokuapp.com', 'immense-inlet-18299.herokuapp.com']
 
 
 # Application definition
