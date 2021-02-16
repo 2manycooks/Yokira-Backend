@@ -1,0 +1,1 @@
+web: gunicorn yokira.wsgi --log-file -
