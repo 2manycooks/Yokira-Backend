@@ -56,16 +56,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'yokira.urls'
 
-REST_FRAMEWORK = {
+""" REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-}
+} """
 
 """ CORS_ORIGIN_WHITELIST = (
     'https://localhost:3000'
@@ -122,10 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'yokira.utils.my_jwt_response_handler',
-    'JWT_VERIFY_EXPIRATION': False
-}
 
 
 

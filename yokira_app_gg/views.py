@@ -10,71 +10,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, viewsets, permissions
 # Model/Serializer Imports
-from django.contrib.auth.models import User, Group
 from yokira_app_gg.models import Test, Equipment, Backpack, Player, Enemy
-from yokira_app_gg.serializers import UserSerializer, GroupSerializer, TestSerializer, UserSerializerWithToken, EquipmentSerializer, BackpackSerializer, PlayerSerializer, EnemySerializer
+from yokira_app_gg.serializers import EquipmentSerializer, BackpackSerializer, PlayerSerializer, EnemySerializer
 
 
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-@api_view(['GET', 'POST'])
-def current_user(request):
-    """
-    Determine the current user by their token, and return their data
-    """
-    
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-def delete_user(request):
-
-    user=User.objects.get(id=request.user.id)
-    user.delete()
-    return JsonResponse({"success": "you have deleted successfully"})
-
-@api_view(['PUT'])
-def edit_user(request):
-    user= User.objects.get(id=request.user.id)
-    import json
-    data = json.loads(request.body)
-    user.username= data.get("username")
-    user.save()
-    return JsonResponse({"success": "you have edited successfully"})
-
-class UserList(APIView):
-    """
-    Create a new user. It's called 'UserList' because normally we'd have a get
-    method here too, for retrieving a list of all User objects.
-    """
-
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, format=None):
-        serializer = UserSerializerWithToken(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-            console.log(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        console.log(serializer.data)
 
 @api_view(['GET', 'POST'])
 def equipment_list(request):

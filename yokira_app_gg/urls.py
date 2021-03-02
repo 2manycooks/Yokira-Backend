@@ -1,7 +1,6 @@
 from django.conf.urls import url, include
 from django.urls import path, include
 from yokira_app_gg import views
-from .views import current_user, UserList
 
 
  
@@ -11,10 +10,6 @@ urlpatterns = [
     url(r'^api/test/published$', views.test_list_published),
     url(r'^hello$', views.hello_world),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('current_user/', current_user),
-    path('users/', UserList.as_view()),
-    path('users/delete', views.delete_user),
-    path('users/edit', views.edit_user),
     path('equipment_list/', views.equipment_list),
     path('backpack/', views.backpack),
     path('player_info/', views.player_info),
