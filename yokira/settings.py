@@ -151,3 +151,4 @@ DISABLE_COLLECTSTATIC=1
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+SESSION_COOKIE_SECURE = True
